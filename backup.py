@@ -4,7 +4,6 @@ import dotenv
 import logging
 import time
 import json
-from webdav3.client import Client
 import requests
 
 print("-"*50)
