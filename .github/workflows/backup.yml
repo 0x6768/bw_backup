@@ -44,5 +44,4 @@ jobs:
         SMTP2API_URL: ${{ secrets.SMTP2API_URL }}
         SMTP2API_TOKEN: ${{ secrets.SMTP2API_TOKEN }}
       run: |
-        cd bw_backup
         python backup.py
