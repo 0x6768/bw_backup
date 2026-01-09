@@ -1,0 +1,48 @@
+name: Bitwarden Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' 
+  workflow_dispatch:
+    
+
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install Bitwarden CLI
+      run: npm install -g @bitwarden/cli
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install Python dependencies
+      run: |
+        cd bw_backup
+        pip install -r requirements.txt
+    
+    - name: Run backup script
+      env:
+        BW_SERVER: ${{ secrets.BW_SERVER }}
+        BW_USERNAME: ${{ secrets.BW_USERNAME }}
+        BW_PASSWORD: ${{ secrets.BW_PASSWORD }}
+        WEBDAV_URL: ${{ secrets.WEBDAV_URL }}
+        WEBDAV_USER: ${{ secrets.WEBDAV_USER }}
+        WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
+        SMTP2API_URL: ${{ secrets.SMTP2API_URL }}
+        SMTP2API_TOKEN: ${{ secrets.SMTP2API_TOKEN }}
+      run: |
+        cd bw_backup
+        python backup.py
