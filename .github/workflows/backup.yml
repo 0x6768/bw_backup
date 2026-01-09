@@ -30,7 +30,6 @@ jobs:
     
     - name: Install Python dependencies
       run: |
-        cd bw_backup
         pip install -r requirements.txt
     
     - name: Run backup script
